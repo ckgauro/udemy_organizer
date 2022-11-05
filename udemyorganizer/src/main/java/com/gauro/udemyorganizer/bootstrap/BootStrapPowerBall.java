@@ -157,8 +157,10 @@ public class BootStrapPowerBall implements CommandLineRunner {
     }
 
     Map<String, List<String>> getNumbers() {
-      //  Map<String, List<String>> numbers=getNumbersOct31();
+       //Map<String, List<String>> numbers=getNumbersOct31();
         Map<String, List<String>> numbers=getNumbersNov2();
+       // Map<String, List<String>> numbers=getNumbersOct29();
+
 
         return numbers;
 
@@ -185,10 +187,36 @@ public class BootStrapPowerBall implements CommandLineRunner {
 
         numbers.put("lsNumbers",lsNumbers);
         List<String> winningNumber = new ArrayList<>();
-        winningNumber.add("5,23,28,54,61,24");
+        winningNumber.add("13,19,36,39,59,13");
         numbers.put("winningNumber",winningNumber);
+        return numbers;
 
+    }
 
+    private Map<String, List<String>>  getNumbersOct29() {
+        Map<String, List<String>> numbers=new HashMap<>();
+
+        List<String> lsNumbers = new ArrayList<>();
+        lsNumbers.add("5,23,28,54,61,24");
+        lsNumbers.add("5,36,42,63,66,8");
+        lsNumbers.add("9,28,37,46,53,10");
+        lsNumbers.add("6,24,29,48,55,5");
+        lsNumbers.add("12,16,37,42,59,16");
+        lsNumbers.add("10,33,36,57,64,12");
+        lsNumbers.add("10,29,33,57,69,6");
+        lsNumbers.add("13,21,43,63,66,5");
+        lsNumbers.add("9,15,36,49,55,20");
+        lsNumbers.add("1,5,32,49,61,10");
+        lsNumbers.add("9,16,42,49,56,6");
+        lsNumbers.add("7,16,36,44,67,23");
+        lsNumbers.add("11,26,30,49,55,4");
+        lsNumbers.add("12,21,30,48,56,14");
+        lsNumbers.add("11,24,37,46,61,13");
+
+        numbers.put("lsNumbers",lsNumbers);
+        List<String> winningNumber = new ArrayList<>();
+        winningNumber.add("19,31,40,46,57,23");
+        numbers.put("winningNumber",winningNumber);
         return numbers;
 
     }
