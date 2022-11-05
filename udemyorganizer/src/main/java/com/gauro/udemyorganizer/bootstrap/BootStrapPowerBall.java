@@ -3,16 +3,16 @@ package com.gauro.udemyorganizer.bootstrap;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Chandra
  */
 @Component
 public class BootStrapPowerBall implements CommandLineRunner {
+
+   // int[] winning = {2, 11, 22, 35, 60, 23}; // Winning numbers, last being Powerball
+
     @Override
     public void run(String... args) throws Exception {
         findNumber();
@@ -24,7 +24,6 @@ public class BootStrapPowerBall implements CommandLineRunner {
         // statements of higher probability outcomes
         int tries = 50;                     // $2 per try, mind you
         int jackpot = 1500000000;             // Amount won in the jackpot
-        int[] winning = {2, 11, 22, 35, 60, 23}; // Winning numbers, last being Powerball
         boolean presetWin = true;               // if you don't want to use the winning numbers
         // above, set to false and winning numbers will
         // be generated
@@ -38,14 +37,30 @@ public class BootStrapPowerBall implements CommandLineRunner {
 
 
         int index = 0;
-        for (String number : getNumbers()) {
-            String[] num=number.split(",");
-            choices[0] = Integer.parseInt(num[0]);
-            choices[1] =  Integer.parseInt(num[1]);
-            choices[2] =  Integer.parseInt(num[2]);
-            choices[3] =  Integer.parseInt(num[3]);
-            choices[4] =  Integer.parseInt(num[4]);
-            int powerball =  Integer.parseInt(num[5]);
+
+
+        List<String> numbers=getNumbers().get("lsNumbers");
+        String winningNumbers=getNumbers().get("winningNumber").get(0);
+
+        String[] num= winningNumbers.split(",");
+        int[] winning = {2, 11, 22, 35, 60, 23};
+        for(int ind=0; ind<num.length;ind++){
+            winning[ind]=Integer.parseInt(num[ind].trim());
+        }
+        System.out.println("winning===>");
+        Arrays.stream(winning).forEach(el-> System.out.print(el+","));
+        System.out.println("======");
+
+
+        for (String numberStr : numbers) {
+            String[] number=numberStr.split(",");
+
+            choices[0] = Integer.parseInt(number[0].trim());
+            choices[1] = Integer.parseInt(number[1].trim());
+            choices[2] = Integer.parseInt(number[2].trim());
+            choices[3] = Integer.parseInt(number[3].trim());
+            choices[4] = Integer.parseInt(number[4].trim());
+            int powerball = Integer.parseInt(number[5].trim());
 
             // Sort 'em
             Arrays.sort(choices, 0, 5);
@@ -105,7 +120,8 @@ public class BootStrapPowerBall implements CommandLineRunner {
                 payout += comboAmounts[8];
                 winningCombos[8]++;
             }
-        }
+
+    }
 
         System.out.println("\nWinning numbers: " + winning[0] + " " + winning[1] + " " + winning[2] +
                 " " + winning[3] + " " + winning[4] + " " + winning[5]);
@@ -140,12 +156,77 @@ public class BootStrapPowerBall implements CommandLineRunner {
         }
     }
 
-    List<String> getNumbers() {
+    Map<String, List<String>> getNumbers() {
+      //  Map<String, List<String>> numbers=getNumbersOct31();
+        Map<String, List<String>> numbers=getNumbersNov2();
+
+        return numbers;
+
+    }
+    private Map<String, List<String>>  getNumbersOct31() {
+        Map<String, List<String>> numbers=new HashMap<>();
+
         List<String> lsNumbers = new ArrayList<>();
-        lsNumbers.add("4,19,46,56,58,23");
-        lsNumbers.add("02,11,31,35,60,23");
+        lsNumbers.add("5,23,28,54,61,24");
+        lsNumbers.add("5,36,42,63,66,8");
+        lsNumbers.add("9,28,37,46,53,10");
+        lsNumbers.add("6,24,29,48,55,5");
+        lsNumbers.add("12,16,37,42,59,16");
+        lsNumbers.add("10,33,36,57,64,12");
+        lsNumbers.add("10,29,33,57,69,6");
+        lsNumbers.add("13,21,43,63,66,5");
+        lsNumbers.add("9,15,36,49,55,20");
+        lsNumbers.add("1,5,32,49,61,10");
+        lsNumbers.add("9,16,42,49,56,6");
+        lsNumbers.add("7,16,36,44,67,23");
+        lsNumbers.add("11,26,30,49,55,4");
+        lsNumbers.add("12,21,30,48,56,14");
+        lsNumbers.add("11,24,37,46,61,13");
 
-        return lsNumbers;
+        numbers.put("lsNumbers",lsNumbers);
+        List<String> winningNumber = new ArrayList<>();
+        winningNumber.add("5,23,28,54,61,24");
+        numbers.put("winningNumber",winningNumber);
 
+
+        return numbers;
+
+    }
+
+    Map<String, List<String>>  getNumbersNov2() {
+        Map<String, List<String>> numbers=new HashMap<>();
+
+        List<String> lsNumbers = new ArrayList<>();
+        lsNumbers.add("4,29,30,36,44,24");
+        lsNumbers.add("11,27,28,43,69,23");
+        lsNumbers.add("3,4,39,44,57,9");
+        lsNumbers.add("6,24,29,48,55,5");
+        lsNumbers.add("12,16,37,42,59,16");
+        lsNumbers.add("10,33,36,57,64,12");
+        lsNumbers.add("5,23,28,54,61,24");
+        lsNumbers.add("5,36,42,63,66,8");
+        lsNumbers.add("9,28,37,46,53,10");
+        lsNumbers.add("11,26,30,49,55,4");
+        lsNumbers.add("12,21,30,48,56,14");
+        lsNumbers.add("11,24,37,46,61,13");
+        lsNumbers.add("1,5,32,49,61,10");
+        lsNumbers.add("9,16,42,49,56,6");
+        lsNumbers.add("7,16,36,44,67,23");
+        lsNumbers.add("1,2,11,27,62,14");
+        lsNumbers.add("4,16,23,24,47,15");
+        lsNumbers.add("19,22,29,38,50,2");
+        lsNumbers.add("11,29,32,36,57,11");
+        lsNumbers.add("33,41,42,54,62,23");
+        lsNumbers.add("19,39,44,49,51,14");
+        lsNumbers.add("19,41,47,51,53,5");
+        lsNumbers.add("10,29,33,57,69,6");
+        lsNumbers.add("13,21,43,63,66,5");
+        lsNumbers.add("9,15,36,49,55,20");
+        numbers.put("lsNumbers",lsNumbers);
+
+        List<String> winningNumber = new ArrayList<>();
+        winningNumber.add("2, 11, 22, 35, 60, 23");
+        numbers.put("winningNumber",winningNumber);
+        return numbers;
     }
 }
