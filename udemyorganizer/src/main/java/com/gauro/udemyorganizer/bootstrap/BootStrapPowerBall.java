@@ -15,7 +15,7 @@ public class BootStrapPowerBall implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        findNumber();
+      //  findNumber();
     }
 
     private void findNumber() {
