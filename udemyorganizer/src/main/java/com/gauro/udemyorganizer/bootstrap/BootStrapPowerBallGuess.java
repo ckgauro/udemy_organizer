@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -30,37 +27,75 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
 
     private void findLuckyNumber() {
 
-        Predicate<NumberOccur> luckyNumberPredicate =el  -> el.getDrawnTimes() >60  && el.getNumberType().equalsIgnoreCase("powerball");
+        Predicate<NumberOccur> luckyNumberPredicate =el  -> el.getDrawnTimes() >50  && el.getNumberType().equalsIgnoreCase("number");
         Predicate<NumberOccur> powerBallPredicate = el  -> el.getDrawnTimes() >30  && el.getNumberType().equalsIgnoreCase("powerball");
-        int totalPowerBall=10;
+        int totalPowerBall=15;
 
 
         List<Set<Integer>> lsNumber = new ArrayList<>();
-        Set<Integer> powerBall = new HashSet<>();
 
 
         List<NumberOccur> luckyNumber =extractLuckyNumber(luckyNumberPredicate);
         List<NumberOccur> luckyPowerNumber = extractLuckyNumber(powerBallPredicate);
 
-        List<List<String>> predicatedLuckyNumber=predicateNumber(luckyNumber,luckyPowerNumber, totalPowerBall);
+        List<List<Integer>> predicatedLuckyNumber=predicateNumber(luckyNumber,luckyPowerNumber, totalPowerBall);
+        predicatedLuckyNumber.forEach(el->{
+            System.out.println(el);
+        });
 
-        System.out.println(luckyPowerNumber.size());
 
-        while(powerBall.size()<=totalPowerBall){
-            int b = (int) (Math.random() * (luckyPowerNumber.size()));
-           // System.out.println(b+ "luckyNumber:"+luckyPowerNumber.get(b).getLuckyNumber());
-            powerBall.add(luckyPowerNumber.get(b).getLuckyNumber());
-        }
-
-        System.out.println(powerBall);
 
 
 
     }
 
-    private List<List<String>> predicateNumber(List<NumberOccur> luckyNumber, List<NumberOccur> luckyPowerNumber, int totalPowerBall) {
-        List<List<String>> lsNumber=new ArrayList<>();
+    private List<List<Integer>> predicateNumber(List<NumberOccur> luckyNumber, List<NumberOccur> powerBall, int totalNumber) {
+        List<List<Integer>> lsNumber=new ArrayList<>();
+        List<NumberOccur> luckyNumberBackup=new ArrayList<>(luckyNumber);
 
+        List<NumberOccur> powerBallBackUp=new ArrayList<>(powerBall);
+
+
+        System.out.println("Size:"+luckyNumber.size());
+
+        while(lsNumber.size()<=totalNumber){
+            List<Integer> lsLuckyNumber=new ArrayList<>();
+
+            while(lsLuckyNumber.size()<=4){
+                int l = (int) (Math.random() * (luckyNumber.size()));
+                System.out.println(l+"luckyNumber.size():"+ luckyNumber.size());
+                if(!lsLuckyNumber.contains(luckyNumber.get(l).getLuckyNumber())){
+                    lsLuckyNumber.add(luckyNumber.get(l).getLuckyNumber());
+                    luckyNumber.remove(l);
+                }
+                if(luckyNumber.size()<=0){
+                    System.out.println("luckyNumberBackup===>"+luckyNumberBackup.size());
+                    luckyNumber=new ArrayList<>(luckyNumberBackup);
+                }
+            }
+            while(lsLuckyNumber.size()<=5){
+                int l = (int) (Math.random() * (powerBall.size()));
+                System.out.println(l+"luckyNumber.size():"+ powerBall.size());
+                if(!lsLuckyNumber.contains(powerBall.get(l).getLuckyNumber())){
+                    lsLuckyNumber.add(powerBall.get(l).getLuckyNumber());
+                    powerBall.remove(l);
+                }
+                if(powerBall.size()<=0){
+                    System.out.println("luckyNumberBackup===>"+powerBallBackUp.size());
+                    powerBall=new ArrayList<>(powerBallBackUp);
+                }
+            }
+
+
+            lsNumber.add(lsLuckyNumber);
+        }
+
+        /*while(powerBall.size()<=totalPowerBall){
+            int b = (int) (Math.random() * (powerBall.size()));
+            // System.out.println(b+ "luckyNumber:"+luckyPowerNumber.get(b).getLuckyNumber());
+          //  powerBall.add(powerBall.get(b).getLuckyNumber());
+        }
+*/
 
 
         return lsNumber;
