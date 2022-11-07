@@ -6,7 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Chandra
@@ -14,7 +17,8 @@ import java.util.List;
 @Slf4j
 @Component
 public class BootStrapPowerBallGuess implements CommandLineRunner {
-    List<NumberOccur> lsNumberOccur=new ArrayList<>();
+    List<NumberOccur> lsNumberOccur = new ArrayList<>();
+
     @Override
     public void run(String... args) throws Exception {
         storeNumber();
@@ -22,6 +26,32 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
 
     }
 
+
+    private void findLuckumber() {
+        List<Set<Integer>> lsNumber = new ArrayList<>();
+        Set<Integer> powerBall = new HashSet<>();
+
+
+        List<NumberOccur> luckyNumber = lsNumberOccur.stream()
+                .filter(el -> el.getDrawnTimes() >= 60 && el.getNumberType().equalsIgnoreCase("number"))
+                .collect(Collectors.toList());
+        List<NumberOccur> luckyPowerNumber =  lsNumberOccur.stream()
+                .filter(el -> el.getDrawnTimes() >= 30 && el.getNumberType().equalsIgnoreCase("powerball"))
+                .collect(Collectors.toList());
+
+        System.out.println(luckyPowerNumber.size());
+
+        while(powerBall.size()<=15){
+            int b = (int) (Math.random() * (luckyPowerNumber.size()));
+           // System.out.println(b+ "luckyNumber:"+luckyPowerNumber.get(b).getLuckyNumber());
+            powerBall.add(luckyPowerNumber.get(b).getLuckyNumber());
+        }
+
+        System.out.println(powerBall);
+
+
+
+    }
     private void storeNumber() {
         lsNumberOccur.add(NumberOccur.builder().luckyNumber(61).drawnTimes(78).numberType("number").build());
         lsNumberOccur.add(NumberOccur.builder().luckyNumber(32).drawnTimes(77).numberType("number").build());
@@ -121,9 +151,4 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
 
     }
 
-    private void findLuckumber() {
-        lsNumberOccur.forEach(el->{
-            System.out.println(el);
-        });
-    }
 }
