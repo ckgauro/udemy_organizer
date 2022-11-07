@@ -122,5 +122,8 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
     }
 
     private void findLuckumber() {
+        lsNumberOccur.forEach(el->{
+            System.out.println(el);
+        });
     }
 }
