@@ -20,41 +20,42 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         storeNumber();
-        findLuckyNumber();
+        findLuckyNumber(15);
+        System.out.println("====================");
+        findUnLuckyNumber(10);
 
     }
 
 
-    private void findLuckyNumber() {
+    private void findLuckyNumber(int totalPowerBall) {
 
         Predicate<NumberOccur> luckyNumberPredicate =el  -> el.getDrawnTimes() >50  && el.getNumberType().equalsIgnoreCase("number");
         Predicate<NumberOccur> powerBallPredicate = el  -> el.getDrawnTimes() >30  && el.getNumberType().equalsIgnoreCase("powerball");
-        int totalPowerBall=15;
-
-
-        List<Set<Integer>> lsNumber = new ArrayList<>();
-
-
+       // int totalPowerBall=15;
         List<NumberOccur> luckyNumber =extractLuckyNumber(luckyNumberPredicate);
         List<NumberOccur> luckyPowerNumber = extractLuckyNumber(powerBallPredicate);
-
         List<List<Integer>> predicatedLuckyNumber=predicateNumber(luckyNumber,luckyPowerNumber, totalPowerBall);
         predicatedLuckyNumber.forEach(el->{
             System.out.println(el);
         });
+    }
+    private void findUnLuckyNumber(int totalPowerBall) {
 
-
-
-
-
+        Predicate<NumberOccur> luckyNumberPredicate =el  -> el.getDrawnTimes() <50  && el.getNumberType().equalsIgnoreCase("number");
+        Predicate<NumberOccur> powerBallPredicate = el  -> el.getDrawnTimes() <30  && el.getNumberType().equalsIgnoreCase("powerball");
+       // int totalPowerBall=15;
+        List<NumberOccur> luckyNumber =extractLuckyNumber(luckyNumberPredicate);
+        List<NumberOccur> luckyPowerNumber = extractLuckyNumber(powerBallPredicate);
+        List<List<Integer>> predicatedLuckyNumber=predicateNumber(luckyNumber,luckyPowerNumber, totalPowerBall);
+        predicatedLuckyNumber.forEach(el->{
+            System.out.println(el);
+        });
     }
 
     private List<List<Integer>> predicateNumber(List<NumberOccur> luckyNumber, List<NumberOccur> powerBall, int totalNumber) {
         List<List<Integer>> lsNumber=new ArrayList<>();
         List<NumberOccur> luckyNumberBackup=new ArrayList<>(luckyNumber);
-
         List<NumberOccur> powerBallBackUp=new ArrayList<>(powerBall);
-
 
         System.out.println("Size:"+luckyNumber.size());
 
@@ -63,25 +64,25 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
 
             while(lsLuckyNumber.size()<=4){
                 int l = (int) (Math.random() * (luckyNumber.size()));
-                System.out.println(l+"luckyNumber.size():"+ luckyNumber.size());
+               // System.out.println(l+"luckyNumber.size():"+ luckyNumber.size());
                 if(!lsLuckyNumber.contains(luckyNumber.get(l).getLuckyNumber())){
                     lsLuckyNumber.add(luckyNumber.get(l).getLuckyNumber());
                     luckyNumber.remove(l);
                 }
                 if(luckyNumber.size()<=0){
-                    System.out.println("luckyNumberBackup===>"+luckyNumberBackup.size());
+                    //System.out.println("luckyNumberBackup===>"+luckyNumberBackup.size());
                     luckyNumber=new ArrayList<>(luckyNumberBackup);
                 }
             }
             while(lsLuckyNumber.size()<=5){
                 int l = (int) (Math.random() * (powerBall.size()));
-                System.out.println(l+"luckyNumber.size():"+ powerBall.size());
+              //  System.out.println(l+"luckyNumber.size():"+ powerBall.size());
                 if(!lsLuckyNumber.contains(powerBall.get(l).getLuckyNumber())){
                     lsLuckyNumber.add(powerBall.get(l).getLuckyNumber());
                     powerBall.remove(l);
                 }
                 if(powerBall.size()<=0){
-                    System.out.println("luckyNumberBackup===>"+powerBallBackUp.size());
+                  //  System.out.println("luckyNumberBackup===>"+powerBallBackUp.size());
                     powerBall=new ArrayList<>(powerBallBackUp);
                 }
             }
