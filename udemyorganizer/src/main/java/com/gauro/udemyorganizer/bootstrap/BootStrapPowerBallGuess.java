@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -22,26 +23,30 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         storeNumber();
-        findLuckumber();
+        findLuckyNumber();
 
     }
 
 
-    private void findLuckumber() {
+    private void findLuckyNumber() {
+
+        Predicate<NumberOccur> luckyNumberPredicate =el  -> el.getDrawnTimes() >60  && el.getNumberType().equalsIgnoreCase("powerball");
+        Predicate<NumberOccur> powerBallPredicate = el  -> el.getDrawnTimes() >30  && el.getNumberType().equalsIgnoreCase("powerball");
+        int totalPowerBall=10;
+
+
         List<Set<Integer>> lsNumber = new ArrayList<>();
         Set<Integer> powerBall = new HashSet<>();
 
 
-        List<NumberOccur> luckyNumber = lsNumberOccur.stream()
-                .filter(el -> el.getDrawnTimes() >= 60 && el.getNumberType().equalsIgnoreCase("number"))
-                .collect(Collectors.toList());
-        List<NumberOccur> luckyPowerNumber =  lsNumberOccur.stream()
-                .filter(el -> el.getDrawnTimes() >= 30 && el.getNumberType().equalsIgnoreCase("powerball"))
-                .collect(Collectors.toList());
+        List<NumberOccur> luckyNumber =extractLuckyNumber(luckyNumberPredicate);
+        List<NumberOccur> luckyPowerNumber = extractLuckyNumber(powerBallPredicate);
+
+        List<List<String>> predicatedLuckyNumber=predicateNumber(luckyNumber,luckyPowerNumber, totalPowerBall);
 
         System.out.println(luckyPowerNumber.size());
 
-        while(powerBall.size()<=15){
+        while(powerBall.size()<=totalPowerBall){
             int b = (int) (Math.random() * (luckyPowerNumber.size()));
            // System.out.println(b+ "luckyNumber:"+luckyPowerNumber.get(b).getLuckyNumber());
             powerBall.add(luckyPowerNumber.get(b).getLuckyNumber());
@@ -52,6 +57,21 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
 
 
     }
+
+    private List<List<String>> predicateNumber(List<NumberOccur> luckyNumber, List<NumberOccur> luckyPowerNumber, int totalPowerBall) {
+        List<List<String>> lsNumber=new ArrayList<>();
+
+
+
+        return lsNumber;
+    }
+
+    private List<NumberOccur> extractLuckyNumber( Predicate<NumberOccur>  luckyNumberPredicate) {
+       return lsNumberOccur.stream()
+                .filter(luckyNumberPredicate)
+                .collect(Collectors.toList());
+    }
+
     private void storeNumber() {
         lsNumberOccur.add(NumberOccur.builder().luckyNumber(61).drawnTimes(78).numberType("number").build());
         lsNumberOccur.add(NumberOccur.builder().luckyNumber(32).drawnTimes(77).numberType("number").build());
