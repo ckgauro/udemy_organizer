@@ -19,10 +19,10 @@ public class BootStrapPowerBallGuess implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        storeNumber();
-        findLuckyNumber(15);
+       // storeNumber();
+        //findLuckyNumber(15);
         System.out.println("====================");
-        findUnLuckyNumber(10);
+        //findUnLuckyNumber(10);
 
     }
 
